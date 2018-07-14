@@ -1,0 +1,14 @@
+// variables
+
+// mixins
+
+// imports
+@import './Places/Places';
+@import './Footer/Footer';
+
+.App {
+	.btn-access-location {
+		display: block;
+		margin: 20px auto;
+	}
+}

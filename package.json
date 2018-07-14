@@ -1,16 +1,27 @@
 {
-  "name": "4square-places",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+	"name": "4square-places",
+	"version": "0.0.1",
+	"description": "4Square Places App",
+	"repository": "https://github.com/xbrunosousa/4square-places",
+	"homepage": "https://bruno.vin/4square-places",
+	"author": "Bruno Vinícius <mail@bruno.vin>",
+	"private": true,
+	"dependencies": {
+		"date-fns": "^1.29.0",
+		"gh-pages": "^1.2.0",
+		"react": "^16.4.1",
+		"react-dom": "^16.4.1",
+		"react-ga": "^2.5.3",
+		"react-scripts": "1.1.4",
+		"reactstrap": "^6.3.0"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test --env=jsdom",
+		"eject": "react-scripts eject",
+		"styles": "sass --watch src/components/App.scss:src/components/App.css --style compressed",
+		"predeploy": "yarn build",
+		"deploy": "gh-pages -d build"
+	}
 }
