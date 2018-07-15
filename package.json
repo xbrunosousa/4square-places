@@ -23,5 +23,9 @@
 		"styles": "sass --watch src/components/App.scss:src/components/App.css --style compressed",
 		"predeploy": "yarn build",
 		"deploy": "gh-pages -d build"
+	},
+	"devDependencies": {
+		"mapbox-gl": "^0.47.0-beta.1",
+		"react-mapbox-gl": "^3.8.0"
 	}
 }
