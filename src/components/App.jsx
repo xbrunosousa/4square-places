@@ -3,17 +3,8 @@ import './App.css'
 import format from 'date-fns/format'
 import { Button, Container, Alert } from 'reactstrap'
 import Places from './Places/Places'
-import ReactGA from 'react-ga'
-
 
 class App extends Component {
-
-	componentDidMount() {
-		// Google Analytics
-		ReactGA.initialize('UA-121994767-1')
-		ReactGA.pageview(window.location.pathname + window.location.search)
-	}
-
 	constructor() {
 		super()
 		this.state = {
@@ -34,7 +25,6 @@ class App extends Component {
 		fetch(`https://api.foursquare.com/v2/venues/search?ll=${this.state.latitude},${this.state.longitude}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&v=${date}`)
 			.then(res => res.json())
 			.then(res => {
-				console.log(res.response.venues)
 				this.setState({
 					code: res.meta.code,
 					venues: res.response.venues,
@@ -57,7 +47,6 @@ class App extends Component {
 				this.places()
 			} else {
 				this.setState({ error: true })
-				console.log('Houve um erro ao buscar os dados')
 			}
 		})
 	}
@@ -94,12 +83,12 @@ class App extends Component {
 
 				{
 					this.state.code === 403 &&
-					<h2>Cota excedida. Tente novamente amanhã.</h2>
+					<Alert color='danger' style={{ textAlign: 'center' }}>Cota excedida. Tente novamente amanhã.</Alert>
 				}
 
 				{this.state.error === true &&
-					<p>Houve um erro ao capturar sua localização.
-					Recarregue a página. Se o problema persistir, tente novamente mais tarde.</p>}
+					<Alert color='danger' style={{ textAlign: 'center' }}>Houve um erro ao capturar sua localização.
+					Recarregue a página. Se o problema persistir, tente novamente mais tarde.</Alert>}
 
 			</div>
 		)
