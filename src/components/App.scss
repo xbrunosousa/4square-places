@@ -13,6 +13,7 @@ $primary-color: #21242E;
 html {
 	height:100%;
 }
+
 body {
 	background: $primary-color;
 	color: #fff;
@@ -30,6 +31,7 @@ body {
 	.btn-access-location {
 		display: block;
 		margin: 20px auto;
+		box-shadow: none;
 	}
 	.mapboxgl-ctrl-logo {
 		margin: 0 0 0 3px;
