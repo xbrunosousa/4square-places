@@ -64,12 +64,19 @@ class App extends Component {
 
 	render() {
 		let alert = null
-		const dataReceived = this.state.venues
-		switch (this.state.code) {
+		const {
+			code,
+			accessLocation,
+			isLoading,
+			errorLocate,
+			venues
+		} = this.state
+		const dataReceived = venues
+		switch (code) {
 			case 200:
 				alert = (
 					<Places
-						code={this.state.code}
+						code={code}
 						dataReceived={dataReceived}
 					/>
 				)
@@ -93,18 +100,18 @@ class App extends Component {
 					className='btn-access-location'
 					color='success'
 					onClick={this.getLocation}>
-					{this.state.accessLocation}
+					{accessLocation}
 				</Button>
 
 				{
-					this.state.isLoading === true &&
+					isLoading === true &&
 					<Loading />
 				}
 
 				{alert}
 
 				{
-					this.state.errorLocate === true &&
+					errorLocate === true &&
 					<Alert color='danger' style={{ textAlign: 'center' }}>
 						Houve um erro ao capturar sua localização.
 						Recarregue a página. Se o problema persistir, tente novamente mais tarde.
