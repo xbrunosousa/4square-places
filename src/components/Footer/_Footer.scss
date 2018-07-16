@@ -1,0 +1,21 @@
+.FooterApp {
+	position:absolute; 
+	bottom:0;
+	width:100%;
+	background: transparent;
+	border-top: 1px solid #DDE1E6;
+	padding: .75rem 1.25rem;
+	.fa-react {
+		padding: 0 10px 0 10px;
+		font-size: 20px;
+	}
+	.footer-info {
+		border-top: 0;
+		text-align: center;
+		a {
+			text-decoration: none;
+			color: #2F87D0;
+		}
+		color: #7c8b9e;
+	}
+}

@@ -2,7 +2,7 @@ import React from 'react'
 
 const NavbarApp = () => (
 	<div className='NavbarApp'>
-		Navbar Works!
+	<span className='navbar-brand-name'>4square Places</span>
 	</div>
 )
 

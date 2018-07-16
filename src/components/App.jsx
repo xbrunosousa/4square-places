@@ -43,7 +43,7 @@ class App extends Component {
 	getLocation = () => {
 		this.setState({
 			isLoading: true,
-			accessLocation: 'Estamos obtendo sua localização. Por favor, aguarde...'
+			accessLocation: 'Obtendo sua localização. Por favor, aguarde...'
 		})
 		navigator.geolocation.getCurrentPosition((position) => {
 			const latitude = position.coords.latitude
