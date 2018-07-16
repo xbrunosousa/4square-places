@@ -8,7 +8,7 @@ const Map = ReactMapboxGl({
 const Places = ({ dataReceived }) => (
 	<div className='places-app container-fluid'>
 		{
-			dataReceived.slice(0, 15).map((item, key) =>
+			dataReceived.map((item, key) =>
 				<div className='Places row' key={key}>
 
 					<div className='col-sm-6'>

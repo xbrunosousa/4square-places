@@ -28,7 +28,7 @@ class App extends Component {
 		const date = format(new Date(), 'YYYYMMDD')
 
 		// fetch places
-		fetch(`https://api.foursquare.com/v2/venues/search?ll=${this.state.lat},${this.state.lng}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&v=${date}`)
+		fetch(`https://api.foursquare.com/v2/venues/search?ll=${this.state.lat},${this.state.lng}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&limit=15&v=${date}`)
 			.then(res => res.json())
 			.then(res => {
 				this.setState({
