@@ -71,13 +71,12 @@ class App extends Component {
 			errorLocate,
 			venues
 		} = this.state
-		const dataReceived = venues
 		switch (code) {
 			case 200:
 				alert = (
 					<Places
 						code={code}
-						dataReceived={dataReceived}
+						dataReceived={venues}
 					/>
 				)
 				break
