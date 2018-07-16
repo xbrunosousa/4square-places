@@ -3,16 +3,23 @@ import './App.css'
 import format from 'date-fns/format'
 import { Button, Container, Alert } from 'reactstrap'
 import Places from './Places/Places'
+import ReactGA from 'react-ga'
+
 
 class App extends Component {
 
-	componentDidMount() { }
+	componentDidMount() {
+		// Google Analytics
+		ReactGA.initialize('UA-121994767-1')
+		ReactGA.pageview(window.location.pathname + window.location.search)
+	}
 
 	constructor() {
 		super()
 		this.state = {
 			longitude: undefined,
 			latitude: undefined,
+			isLoading: false,
 			error: false,
 			code: undefined,
 			venues: undefined
@@ -30,12 +37,14 @@ class App extends Component {
 				console.log(res.response.venues)
 				this.setState({
 					code: res.meta.code,
-					venues: res.response.venues
+					venues: res.response.venues,
+					isLoading: false
 				})
 			})
 	}
 
 	getLocation = () => {
+		this.setState({ isLoading: true })
 		navigator.geolocation.getCurrentPosition((position) => {
 			const latitude = position.coords.latitude
 			const longitude = position.coords.longitude
@@ -58,6 +67,11 @@ class App extends Component {
 		return (
 			<div className='App'>
 				<Button className='btn-access-location' color='success' onClick={this.getLocation}>Permitir acesso a localização</Button>
+
+				{
+					this.state.isLoading === true &&
+					<p>Tá carregando. Pode demorar um pouco, calma aê!</p>
+				}
 
 
 
