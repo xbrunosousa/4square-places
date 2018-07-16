@@ -31,6 +31,8 @@ const Places = ({ dataReceived }) => (
 						<p>CEP: {item.location.postalCode}</p>
 
 						<p>País: {item.location.country}</p>
+
+						<p>Distância: {item.location.distance} metros</p>
 					</div>
 					<Map
 						// eslint-disable-next-line
