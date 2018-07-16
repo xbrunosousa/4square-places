@@ -15,7 +15,7 @@ class App extends Component {
 			lng: undefined,
 			lat: undefined,
 			isLoading: false,
-			error: false,
+			errorLocate: false,
 			code: undefined,
 			venues: undefined,
 			accessLocation: 'Permitir acesso à localização'
@@ -57,7 +57,7 @@ class App extends Component {
 				})
 				this.places()
 			} else {
-				this.setState({ error: true })
+				this.setState({ errorLocate: true })
 			}
 		})
 	}
@@ -76,11 +76,11 @@ class App extends Component {
 				break
 
 			case 400:
-				alert = <a400 />
+				alert = [a400]
 				break
 
 			case 403:
-				alert = (<a403 />)
+				alert = [a403]
 				break
 
 			default: alert = null
@@ -104,7 +104,7 @@ class App extends Component {
 				{alert}
 
 				{
-					this.state.error === true &&
+					this.state.errorLocate === true &&
 					<Alert color='danger' style={{ textAlign: 'center' }}>
 						Houve um erro ao capturar sua localização.
 						Recarregue a página. Se o problema persistir, tente novamente mais tarde.

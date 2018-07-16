@@ -18,6 +18,7 @@ const Places = ({ dataReceived }) => (
 							src={`${item.categories[0].icon.prefix}88.png`}
 						/>
 						<p>Longitude: {item.location.lng}</p>
+						
 						<p>Latitude: {item.location.lat}</p>
 
 						<p>Place: {item.name}</p>
@@ -32,7 +33,7 @@ const Places = ({ dataReceived }) => (
 
 						<p>País: {item.location.country}</p>
 
-						<p>Distância: {item.location.distance} metros</p>
+						<p>Distância aproximada: {item.location.distance} metros</p>
 					</div>
 					<Map
 						// eslint-disable-next-line
