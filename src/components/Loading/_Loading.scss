@@ -1,0 +1,33 @@
+$bsize: 12px; // (Ball size)
+
+.Loading {
+	margin: 0 auto;
+	text-align: center;
+	.line {
+		display: inline-block;
+		width: $bsize;
+		height: $bsize;
+		border-radius: $bsize;
+		background: #fff;
+		&:nth-last-child(1) {
+			animation: loading .6s .1s linear infinite;
+		}
+		&:nth-last-child(2) {
+			animation: loading .6s .2s linear infinite;
+		}
+		&:nth-last-child(3) {
+			animation: loading .6s .3s linear infinite;
+		}
+		&:nth-last-child(4) {
+			animation: loading .6s .4s linear infinite;
+		}
+	}
+	@keyframes loading {
+		0%, 100% {
+			transform: translate(0,0);
+		}
+		50% {
+			transform: translate(0,15px);
+		}
+	}
+}

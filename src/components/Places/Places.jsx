@@ -1,5 +1,4 @@
 import React from 'react'
-// import { Col, Row } from 'reactstrap'
 import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl'
 
 const Map = ReactMapboxGl({
@@ -7,10 +6,10 @@ const Map = ReactMapboxGl({
 })
 
 const Places = ({ dataReceived }) => (
-	<div className='places-app'>
+	<div className='places-app container-fluid'>
 		{
 			dataReceived.slice(0, 15).map((item, key) =>
-				<div className='Places' key={key}>
+				<div className='Places row' key={key}>
 
 					<div className='col-sm-6'>
 						<img
@@ -41,7 +40,7 @@ const Places = ({ dataReceived }) => (
 						zoom={[15]}
 
 						containerStyle={{
-							height: '200px',
+							height: '400px',
 							width: '100%',
 						}}>
 						<Layer
@@ -60,21 +59,3 @@ const Places = ({ dataReceived }) => (
 )
 
 export default Places
-
-/* 
-<Map
-						// eslint-disable-next-line
-						style='mapbox://styles/mapbox/dark-v9'
-						className='map-place'
-						containerStyle={{
-							height: '200px',
-							width: '100%',
-						}}>
-						<Layer
-							type='symbol'
-							id='marker'
-							layout={{ 'icon-image': 'marker-15' }}>
-							<Feature coordinates={[item.location.lng, item.location.lat]} />
-						</Layer>
-					</Map>
- */

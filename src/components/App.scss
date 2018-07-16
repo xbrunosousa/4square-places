@@ -1,17 +1,19 @@
 // variables
 $primary-color: #21242E;
+
 // mixins
 
 // imports
 @import './Places/Places';
 @import 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css';
 @import './Footer/Footer';
+@import './Loading/Loading';
+@import './NavbarApp/NavbarApp';
 
 body {
 	background: $primary-color;
 	color: #fff;
 }
-
 .App {
 	.btn-access-location {
 		display: block;
