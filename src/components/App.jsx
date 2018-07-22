@@ -31,6 +31,7 @@ class App extends Component {
 		fetch(`https://api.foursquare.com/v2/venues/search?ll=${this.state.lat},${this.state.lng}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&limit=15&v=${date}`)
 			.then(res => res.json())
 			.then(res => {
+				console.log(res)
 				this.setState({
 					code: res.meta.code,
 					venues: res.response.venues,
