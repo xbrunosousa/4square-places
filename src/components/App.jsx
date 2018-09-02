@@ -11,7 +11,7 @@ import './App.css';
 
 class App extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
       toastDefaultProps: {
         position: 'top-right',
