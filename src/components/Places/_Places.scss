@@ -14,9 +14,19 @@
     margin: 0 auto;
     margin-bottom: 40px;
   }
-}
-.teste {
- width: 300px !important;
- margin: 0 auto;
- display: block; 
+  .photoSlides {
+    // div slides
+    width: 300px !important;
+    margin: 0 auto 30px;
+    display: block;
+  }
+  .btn-close-photos {
+    // btn close photos
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 30px;
+  }
+  .hide {
+    display: none;
+  }
 }

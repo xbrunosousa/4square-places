@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import format from 'date-fns/format';
 import { Button } from 'reactstrap';
 import Places from './Places/Places';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loading from './Loading/Loading';
 import NavbarApp from './NavbarApp/NavbarApp';
@@ -43,7 +43,7 @@ class App extends Component {
     fetch(
       `https://api.foursquare.com/v2/venues/search?ll=${this.state.lat},${
         this.state.lng
-      }&client_id=${fourSquareClientId}&client_secret=${fourSquareClientSecret}&limit=15&v=${date}`
+      }&client_id=${fourSquareClientId}&client_secret=${fourSquareClientSecret}&limit=10&v=${date}`
     )
       .then(res => res.json())
       .then(res => {
@@ -146,10 +146,10 @@ class App extends Component {
             code={code}
             photosData={photosData}
             dataReceived={venues}
+            toastDefaultData={this.state.toastDefaultProps}
           />
         )}
 
-        <ToastContainer />
         <Footer />
       </div>
     );
