@@ -10,6 +10,9 @@ import Footer from './Footer/Footer';
 import './App.css';
 
 class App extends Component {
+  componentDidMount() {
+    console.log(window.store.getState());
+  }
   constructor() {
     super();
     this.state = {
