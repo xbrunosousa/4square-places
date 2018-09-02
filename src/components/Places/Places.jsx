@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
 import { Button } from 'reactstrap';
+import Slider from 'react-slick';
+
+const settingsSlickSlider = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1
+};
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -36,6 +45,26 @@ const Places = ({ dataReceived, loadPhotos, photosData, closePhoto }) => (
           <p>País: {item.location.country}</p>
 
           <p>Distância aproximada: {item.location.distance} metros</p>
+          <Slider {...settingsSlickSlider}>
+            <div>
+              <h3>1</h3>
+            </div>
+            <div>
+              <h3>2</h3>
+            </div>
+            <div>
+              <h3>3</h3>
+            </div>
+            <div>
+              <h3>4</h3>
+            </div>
+            <div>
+              <h3>5</h3>
+            </div>
+            <div>
+              <h3>6</h3>
+            </div>
+          </Slider>
         </div>
         <Map
           // eslint-disable-next-line
