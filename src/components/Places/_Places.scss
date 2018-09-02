@@ -1,10 +1,15 @@
 .Places {
-	border-bottom: 1px dashed grey;
-	z-index: 1;
-	top: 0;
-	left: 0;
-	
-	.map-place, .mapboxgl-canvas {
-		z-index: 0;
-	}
+  border-bottom: 1px dashed grey;
+  z-index: 1;
+  top: 0;
+  left: 0;
+
+  .map-place,
+  .mapboxgl-canvas {
+    z-index: 0;
+  }
+  .btn-load-photos {
+    margin: 0 auto;
+    margin-bottom: 40px;
+  }
 }

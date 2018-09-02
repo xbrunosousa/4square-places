@@ -27,20 +27,23 @@ class App extends Component {
       errorLocate: false,
       code: undefined,
       venues: undefined,
-      accessLocation: 'Permitir acesso à localização'
+      accessLocation: 'Permitir acesso à localização',
+      fourSquareClientId: 'T2LPSOLZ5QN313AVWZIOFYMTENZFECV3I2H33V0Q435ANRED',
+      fourSquareClientSecret:
+        'RZTUNDKJ12MBH1GR30YPHJU3RCRLR5VT20ELPYTQJ1XH3HUL',
+      photosData: {}
     };
   }
 
   places = () => {
-    const CLIENT_ID = 'T2LPSOLZ5QN313AVWZIOFYMTENZFECV3I2H33V0Q435ANRED';
-    const CLIENT_SECRET = 'RZTUNDKJ12MBH1GR30YPHJU3RCRLR5VT20ELPYTQJ1XH3HUL';
+    const { fourSquareClientId, fourSquareClientSecret } = this.state;
     const date = format(new Date(), 'YYYYMMDD');
 
     // fetch places
     fetch(
       `https://api.foursquare.com/v2/venues/search?ll=${this.state.lat},${
         this.state.lng
-      }&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&limit=15&v=${date}`
+      }&client_id=${fourSquareClientId}&client_secret=${fourSquareClientSecret}&limit=15&v=${date}`
     )
       .then(res => res.json())
       .then(res => {
@@ -89,14 +92,38 @@ class App extends Component {
       }
     });
   };
+  loadPhotos = idVenue => {
+    const { fourSquareClientId, fourSquareClientSecret } = this.state;
+
+    const date = format(new Date(), 'YYYYMMDD');
+
+    fetch(
+      `https://api.foursquare.com/v2/venues/${idVenue}/photos?client_id=${fourSquareClientId}&client_secret=${fourSquareClientSecret}&v=${date}`
+    )
+      .then(res => res.json())
+      .then(res => {
+        if (res.meta.code === 200) {
+          this.setState({
+            photosData: {
+              [idVenue]: res.response.photos,
+              [`${idVenue}_clicked`]: true
+            }
+          });
+        } else {
+          alert('Erro ao recuperar as fotos');
+        }
+      });
+  };
+  closePhoto = id => {
+    this.setState({
+      photosData: {
+        [`${id}_clicked`]: false
+      }
+    });
+  };
 
   render() {
-    const {
-      code,
-      accessLocation,
-      isLoading,
-      venues
-    } = this.state;
+    const { code, accessLocation, isLoading, venues, photosData } = this.state;
     return (
       <div className="App">
         <NavbarApp />
@@ -112,7 +139,15 @@ class App extends Component {
 
         {isLoading && <Loading />}
 
-        {code === 200 && <Places code={code} dataReceived={venues} />}
+        {code === 200 && (
+          <Places
+            loadPhotos={idVenue => this.loadPhotos(idVenue)}
+            closePhoto={idVenue => this.closePhoto(idVenue)}
+            code={code}
+            photosData={photosData}
+            dataReceived={venues}
+          />
+        )}
 
         <ToastContainer />
         <Footer />
