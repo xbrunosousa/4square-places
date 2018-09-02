@@ -1,6 +1,16 @@
 import React from 'react';
 import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
 import { Button } from 'reactstrap';
+import Slider from 'react-slick';
+
+const settingsSlickSlider = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  className: 'teste'
+};
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -8,7 +18,7 @@ const Map = ReactMapboxGl({
 });
 
 const Places = ({ dataReceived, loadPhotos, photosData, closePhoto }) => (
-  <div className="places-app container-fluid">
+  <div className="places-app container-fluid col-md-12">
     {dataReceived.map((item, key) => (
       <div className="Places row" key={key}>
         <div className="col-sm-6">
@@ -66,21 +76,25 @@ const Places = ({ dataReceived, loadPhotos, photosData, closePhoto }) => (
         </Button>
 
         {photosData[`${item.id}_clicked`] && (
-          <div>
+          <div className="col-md-12">
             <button
               onClick={() => closePhoto(item.id)}
               className="btn btn-primary"
             >
               Close
             </button>
-            {photosData[`${item.id}`].count > 0 &&
-              photosData[`${item.id}`].items.map((i, key) => (
-                <img
-                  key={key}
-                  alt={item.name}
-                  src={`${i.prefix}300x500${i.suffix}`}
-                />
-              ))}
+            <Slider {...settingsSlickSlider}>
+              {photosData[`${item.id}`].count > 0 &&
+                photosData[`${item.id}`].items.map((i, key) => (
+                  <div className="teste" key={key}>
+                    <img
+                      alt={item.name}
+                      src={`${i.prefix}300x500${i.suffix}`}
+                    />
+                  </div>
+                ))
+                }
+                </Slider>
             {photosData[`${item.id}`].count === 0 && (
               <p>Não há fotos para este local!</p>
             )}
