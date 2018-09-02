@@ -1,3 +1,5 @@
+@import '~slick-carousel/slick/slick.css';
+@import '~slick-carousel/slick/slick-theme.css';
 .Places {
   border-bottom: 1px dashed grey;
   z-index: 1;
@@ -12,4 +14,9 @@
     margin: 0 auto;
     margin-bottom: 40px;
   }
+}
+.teste {
+ width: 300px !important;
+ margin: 0 auto;
+ display: block; 
 }
