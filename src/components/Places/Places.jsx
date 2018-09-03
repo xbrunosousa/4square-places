@@ -42,11 +42,17 @@ const Places = ({ loadPhotos, closePhoto }) => (
             <p>Categoria: {item.categories[0].name}</p>
           )}
 
-          <p>Estado: {item.location.state}</p>
+          {item.location.state &&
+            <p>Estado: {item.location.state}</p>
+          }
 
-          <p>CEP: {item.location.postalCode}</p>
+          {item.location.postalCode &&
+            <p>CEP: {item.location.postalCode}</p>
+          }
 
-          <p>País: {item.location.country}</p>
+          {item.location.country && 
+            <p>País: {item.location.country}</p>
+          }
 
           <p>Distância aproximada: {item.location.distance} metros</p>
         </div>

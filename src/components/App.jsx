@@ -10,14 +10,7 @@ import Footer from './Footer/Footer';
 import store from './../store/index';
 import './App.css';
 import { connect } from 'react-redux';
-// import getVenues from './../services/foursquareEndpoints';
-
-import {
-  addPhotos,
-  addVenues,
-  addLocation,
-  accessLocation
-} from './../actions';
+import {addPhotos, addVenues, addLocation, accessLocation } from './../actions';
 class App extends Component {
   componentDidMount() {
     // store.subscribe(() => console.log('Alterou'))
