@@ -7,61 +7,52 @@ import 'react-toastify/dist/ReactToastify.css';
 import Loading from './Loading/Loading';
 import NavbarApp from './NavbarApp/NavbarApp';
 import Footer from './Footer/Footer';
+import store from './../store/index';
 import './App.css';
+import { connect } from 'react-redux';
+import getVenues from './../services/foursquareEndpoints'
 
+import {
+  addPhotos,
+  addVenues,
+  addLocation,
+  accessLocation
+} from './../actions';
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      toastDefaultProps: {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true
-      },
-      lng: undefined,
-      lat: undefined,
       isLoading: false,
       errorLocate: false,
       code: undefined,
-      venues: undefined,
-      accessLocation: 'Permitir acesso à localização',
-      fourSquareClientId: 'T2LPSOLZ5QN313AVWZIOFYMTENZFECV3I2H33V0Q435ANRED',
-      fourSquareClientSecret:
-        'RZTUNDKJ12MBH1GR30YPHJU3RCRLR5VT20ELPYTQJ1XH3HUL',
-      photosData: {}
     };
   }
 
   places = () => {
-    const { fourSquareClientId, fourSquareClientSecret } = this.state;
     const date = format(new Date(), 'YYYYMMDD');
-
     // fetch places
-    fetch(
-      `https://api.foursquare.com/v2/venues/search?ll=${this.state.lat},${
-        this.state.lng
-      }&client_id=${fourSquareClientId}&client_secret=${fourSquareClientSecret}&limit=10&v=${date}`
-    )
+    fetch(`https://api.foursquare.com/v2/venues/search?ll=${
+      store.getState().userLocation.lat
+    },${store.getState().userLocation.lng}&client_id=${
+      store.getState().fourSquareClientId
+    }&client_secret=${store.getState().fourSquareClientSecret}&limit=10&v=${date}`)
       .then(res => res.json())
       .then(res => {
         this.setState({
           code: res.meta.code,
-          venues: res.response.venues,
-          isLoading: false,
-          accessLocation: 'Atualizar sua localização'
+          isLoading: false
         });
+        store.dispatch(addVenues(res.response.venues));
+        store.dispatch(accessLocation('Atualizar sua localização...'));
         if (res.meta.code === 403) {
           toast.error(
             'Cota excedida. Tente novamente mais tarde.',
-            this.state.toastDefaultProps
+            store.getState().toastDefaultProps
           );
         } else if (res.meta.code === 400) {
           toast.error(
             'Houve um erro ao buscar os dados. Tente novamente mais tarde.',
-            this.state.toastDefaultProps
+            store.getState().toastDefaultProps
           );
         }
       });
@@ -69,19 +60,21 @@ class App extends Component {
 
   getLocation = () => {
     this.setState({
-      isLoading: true,
-      accessLocation: 'Obtendo sua localização. Por favor, aguarde...'
+      isLoading: true
     });
+    store.dispatch(
+      accessLocation('Obtendo sua localização. Por favor, aguarde...')
+    );
     navigator.geolocation.getCurrentPosition(position => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
 
-      if (position.coords.latitude !== undefined) {
-        this.setState({
-          lat: latitude,
-          lng: longitude,
-          accessLocation: 'Localização obtida. Carregando resultados...'
-        });
+      if (latitude !== undefined) {
+        store.dispatch(addLocation({ lng: longitude, lat: latitude }));
+        console.log(store.getState().userLocation);
+        store.dispatch(
+          accessLocation('Localização obtida. Carregando resultados...')
+        );
         this.places();
       } else {
         this.setState({ errorLocate: true });
@@ -93,40 +86,47 @@ class App extends Component {
     });
   };
   loadPhotos = idVenue => {
-    const { fourSquareClientId, fourSquareClientSecret } = this.state;
-
     const date = format(new Date(), 'YYYYMMDD');
 
     fetch(
-      `https://api.foursquare.com/v2/venues/${idVenue}/photos?client_id=${fourSquareClientId}&client_secret=${fourSquareClientSecret}&v=${date}`
+      `https://api.foursquare.com/v2/venues/${idVenue}/photos?client_id=${
+        store.getState().fourSquareClientId
+      }&client_secret=${store.getState().fourSquareClientSecret}&v=${date}`
     )
       .then(res => res.json())
       .then(res => {
         if (res.meta.code === 200) {
-          this.setState({
-            photosData: {
+          store.dispatch(
+            addPhotos({
               [idVenue]: res.response.photos,
               [`${idVenue}_clicked`]: true
-            }
-          });
+            })
+          );
         } else {
           alert('Erro ao recuperar as fotos');
         }
       });
   };
   closePhoto = id => {
-    this.setState({
-      photosData: {
-        [`${id}_clicked`]: false
-      }
-    });
+    store.dispatch(
+      addPhotos({
+        photosData: { [`${id}_clicked`]: false }
+      })
+    );
+  };
+
+  teste = () => {
+    console.log(store.getState());
+    // console.log(store.dispatch(addLocation({ lng: 'Redux Tutorial', lat: 1 })));
+    // console.log(store.getState().fourSquareClientId);
   };
 
   render() {
-    const { code, accessLocation, isLoading, venues, photosData } = this.state;
+    const { code, isLoading } = this.state;
     return (
       <div className="App">
         <NavbarApp />
+        <button onClick={this.teste}>Teste store</button>
         <ToastContainer />
         <Button
           outline
@@ -134,7 +134,7 @@ class App extends Component {
           color="success"
           onClick={this.getLocation}
         >
-          {accessLocation}
+          {store.getState().accessLocation}
         </Button>
 
         {isLoading && <Loading />}
@@ -143,10 +143,6 @@ class App extends Component {
           <Places
             loadPhotos={idVenue => this.loadPhotos(idVenue)}
             closePhoto={idVenue => this.closePhoto(idVenue)}
-            code={code}
-            photosData={photosData}
-            dataReceived={venues}
-            toastDefaultData={this.state.toastDefaultProps}
           />
         )}
 
@@ -156,4 +152,7 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = store => ({
+  articles: store.articles
+});
+export default connect(mapStateToProps)(App);

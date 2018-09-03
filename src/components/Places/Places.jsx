@@ -3,6 +3,7 @@ import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
 import { Button } from 'reactstrap';
 import Slider from 'react-slick';
 import { toast, ToastContainer } from 'react-toastify';
+import store from './../../store';
 
 const settingsSlickSlider = {
   dots: true,
@@ -18,16 +19,10 @@ const Map = ReactMapboxGl({
     'pk.eyJ1IjoiYnJ1bm92bWUiLCJhIjoiY2pqZTNvY3Y2NGoxNjNxb2duN3V6czJyNyJ9.LP1cdUBGFmCo1-kRvy7olg'
 });
 
-const Places = ({
-  dataReceived,
-  loadPhotos,
-  photosData,
-  closePhoto,
-  toastDefaultData
-}) => (
+const Places = ({ loadPhotos, closePhoto }) => (
   <div className="places-app container-fluid col-md-12">
     <ToastContainer />
-    {dataReceived.map((item, key) => (
+    {store.getState().venues.map((item, key) => (
       <div className="Places row" key={key}>
         <div className="col-sm-6">
           <img
@@ -83,9 +78,9 @@ const Places = ({
           Carregar fotos
         </Button>
 
-        {photosData[`${item.id}_clicked`] && (
+        {store.getState().photosData[`${item.id}_clicked`] && (
           <div className="col-md-12">
-            {photosData[`${item.id}`].count > 0 && (
+            {store.getState().photosData[`${item.id}`].count > 0 && (
               <button
                 onClick={() => closePhoto(item.id)}
                 className="btn btn-primary btn-close-photos"
@@ -94,18 +89,23 @@ const Places = ({
               </button>
             )}
             <Slider {...settingsSlickSlider}>
-              {photosData[`${item.id}`].count > 0 &&
-                photosData[`${item.id}`].items.map((i, key) => (
-                  <div className="teste" key={key}>
-                    <img
-                      alt={item.name}
-                      src={`${i.prefix}300x500${i.suffix}`}
-                    />
-                  </div>
-                ))}
+              {store.getState().photosData[`${item.id}`].count > 0 &&
+                store
+                  .getState()
+                  .photosData[`${item.id}`].items.map((i, key) => (
+                    <div className="teste" key={key}>
+                      <img
+                        alt={item.name}
+                        src={`${i.prefix}300x500${i.suffix}`}
+                      />
+                    </div>
+                  ))}
             </Slider>
-            {photosData[`${item.id}`].count === 0 &&
-              toast.error('Não há fotos para este local!', toastDefaultData)}
+            {store.getState().photosData[`${item.id}`].count === 0 &&
+              toast.error(
+                'Não há fotos para este local!',
+                store.getState().toastDefaultProps
+              )}
           </div>
         )}
       </div>
