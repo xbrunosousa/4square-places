@@ -19,10 +19,10 @@ const Map = ReactMapboxGl({
     'pk.eyJ1IjoiYnJ1bm92bWUiLCJhIjoiY2pqZTNvY3Y2NGoxNjNxb2duN3V6czJyNyJ9.LP1cdUBGFmCo1-kRvy7olg'
 });
 
-const Places = ({ dataReceived, loadPhotos, photosData, closePhoto }) => (
+const Places = ({ loadPhotos, closePhoto }) => (
   <div className="places-app container-fluid col-md-12">
     <ToastContainer />
-    {dataReceived.map((item, key) => (
+    {store.getState().venues.map((item, key) => (
       <div className="Places row" key={key}>
         <div className="col-sm-6">
           <img
