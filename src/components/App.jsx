@@ -7,23 +7,27 @@ import 'react-toastify/dist/ReactToastify.css';
 import Loading from './Loading/Loading';
 import NavbarApp from './NavbarApp/NavbarApp';
 import Footer from './Footer/Footer';
+import store from './../store/index';
 import './App.css';
-
+import { connect } from 'react-redux';
+import { addArticle, addPhotos } from './../actions';
 class App extends Component {
   componentDidMount() {
-    console.log(window.store.getState());
+    console.log(store.getState());
+
+    console.log(store.getState().photosData);
+
+    console.log(addArticle());
+
+    store.dispatch(addArticle({ name: 'Redux Tutorial', id: 1 }));
+
+    console.log(store.dispatch(addArticle({ name: 'Redux Tutorial', id: 1 })));
+
+    console.log(store.getState());
   }
   constructor() {
     super();
     this.state = {
-      toastDefaultProps: {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true
-      },
       lng: undefined,
       lat: undefined,
       isLoading: false,
@@ -59,12 +63,12 @@ class App extends Component {
         if (res.meta.code === 403) {
           toast.error(
             'Cota excedida. Tente novamente mais tarde.',
-            this.state.toastDefaultProps
+            store.getState().toastDefaultProps
           );
         } else if (res.meta.code === 400) {
           toast.error(
             'Houve um erro ao buscar os dados. Tente novamente mais tarde.',
-            this.state.toastDefaultProps
+            store.getState().toastDefaultProps
           );
         }
       });
@@ -106,23 +110,37 @@ class App extends Component {
       .then(res => res.json())
       .then(res => {
         if (res.meta.code === 200) {
-          this.setState({
-            photosData: {
+          store.dispatch(
+            addPhotos({
               [idVenue]: res.response.photos,
               [`${idVenue}_clicked`]: true
-            }
-          });
+            })
+          );
         } else {
           alert('Erro ao recuperar as fotos');
         }
       });
   };
   closePhoto = id => {
-    this.setState({
-      photosData: {
-        [`${id}_clicked`]: false
-      }
-    });
+    // this.setState({
+    //   photosData: { [`${id}_clicked`]: false }
+    // });
+    store.dispatch(
+      addPhotos({
+        photosData: { [`${id}_clicked`]: false }
+      })
+    );
+    /*store.dispatch(
+            addPhotos({
+              [idVenue]: res.response.photos,
+              [`${idVenue}_clicked`]: true
+            })
+          ); */
+  };
+
+  teste = () => {
+    console.log(store.getState());
+    console.log(store.getState().photosData);
   };
 
   render() {
@@ -130,6 +148,7 @@ class App extends Component {
     return (
       <div className="App">
         <NavbarApp />
+        <button onClick={this.teste}>Teste store</button>
         <ToastContainer />
         <Button
           outline
@@ -149,7 +168,6 @@ class App extends Component {
             code={code}
             photosData={photosData}
             dataReceived={venues}
-            toastDefaultData={this.state.toastDefaultProps}
           />
         )}
 
@@ -159,4 +177,7 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = store => ({
+  articles: store.articles
+});
+export default connect(mapStateToProps)(App);
