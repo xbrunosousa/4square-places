@@ -16,11 +16,6 @@ const initialState = {
     pauseOnHover: true,
     draggable: true
   },
-  lng: undefined,
-  lat: undefined,
-  isLoading: false,
-  errorLocate: false,
-  code: undefined,
   venues: [],
   userLocation: {
     lng: undefined,

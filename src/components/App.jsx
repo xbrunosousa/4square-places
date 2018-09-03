@@ -10,7 +10,7 @@ import Footer from './Footer/Footer';
 import store from './../store/index';
 import './App.css';
 import { connect } from 'react-redux';
-import getVenues from './../services/foursquareEndpoints'
+// import getVenues from './../services/foursquareEndpoints';
 
 import {
   addPhotos,
@@ -19,6 +19,9 @@ import {
   accessLocation
 } from './../actions';
 class App extends Component {
+  componentDidMount() {
+    store.subscribe(() => console.log('Alterou'))
+  }
   constructor() {
     super();
     this.state = {
@@ -29,13 +32,18 @@ class App extends Component {
   }
 
   places = () => {
+    console.log('Recebendo lugares 4Square');
     const date = format(new Date(), 'YYYYMMDD');
     // fetch places
-    fetch(`https://api.foursquare.com/v2/venues/search?ll=${
-      store.getState().userLocation.lat
-    },${store.getState().userLocation.lng}&client_id=${
-      store.getState().fourSquareClientId
-    }&client_secret=${store.getState().fourSquareClientSecret}&limit=10&v=${date}`)
+    fetch(
+      `https://api.foursquare.com/v2/venues/search?ll=${
+        store.getState().userLocation.lat
+      },${store.getState().userLocation.lng}&client_id=${
+        store.getState().fourSquareClientId
+      }&client_secret=${
+        store.getState().fourSquareClientSecret
+      }&limit=10&v=${date}`
+    )
       .then(res => res.json())
       .then(res => {
         this.setState({
@@ -56,9 +64,10 @@ class App extends Component {
           );
         }
       });
-  };
+  }
 
   getLocation = () => {
+    console.log('pegando localização');
     this.setState({
       isLoading: true
     });
@@ -66,12 +75,15 @@ class App extends Component {
       accessLocation('Obtendo sua localização. Por favor, aguarde...')
     );
     navigator.geolocation.getCurrentPosition(position => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-
-      if (latitude !== undefined) {
-        store.dispatch(addLocation({ lng: longitude, lat: latitude }));
-        console.log(store.getState().userLocation);
+      const latitude = position.coords.latitude,
+        longitude = position.coords.longitude;
+      if (position.coords.latitude !== undefined) {
+        store.dispatch(
+          addLocation({
+            lng: longitude,
+            lat: latitude
+          })
+        );
         store.dispatch(
           accessLocation('Localização obtida. Carregando resultados...')
         );
@@ -84,7 +96,7 @@ class App extends Component {
         );
       }
     });
-  };
+  }
   loadPhotos = idVenue => {
     const date = format(new Date(), 'YYYYMMDD');
 
@@ -115,18 +127,10 @@ class App extends Component {
     );
   };
 
-  teste = () => {
-    console.log(store.getState());
-    // console.log(store.dispatch(addLocation({ lng: 'Redux Tutorial', lat: 1 })));
-    // console.log(store.getState().fourSquareClientId);
-  };
-
   render() {
-    const { code, isLoading } = this.state;
     return (
       <div className="App">
         <NavbarApp />
-        <button onClick={this.teste}>Teste store</button>
         <ToastContainer />
         <Button
           outline
@@ -137,14 +141,13 @@ class App extends Component {
           {store.getState().accessLocation}
         </Button>
 
-        {isLoading && <Loading />}
+        {this.state.isLoading && <Loading />}
 
-        {code === 200 && (
-          <Places
-            loadPhotos={idVenue => this.loadPhotos(idVenue)}
-            closePhoto={idVenue => this.closePhoto(idVenue)}
-          />
-        )}
+        <Places
+          loadPhotos={idVenue => this.loadPhotos(idVenue)}
+          closePhoto={idVenue => this.closePhoto(idVenue)}
+          code={this.state.code}
+        />
 
         <Footer />
       </div>
@@ -153,6 +156,6 @@ class App extends Component {
 }
 
 const mapStateToProps = store => ({
-  articles: store.articles
+  venues: store.venues
 });
 export default connect(mapStateToProps)(App);
