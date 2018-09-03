@@ -20,7 +20,7 @@ import {
 } from './../actions';
 class App extends Component {
   componentDidMount() {
-    store.subscribe(() => console.log('Alterou'))
+    // store.subscribe(() => console.log('Alterou'))
   }
   constructor() {
     super();
@@ -32,9 +32,8 @@ class App extends Component {
   }
 
   places = () => {
-    console.log('Recebendo lugares 4Square');
-    const date = format(new Date(), 'YYYYMMDD');
     // fetch places
+    const date = format(new Date(), 'YYYYMMDD');
     fetch(
       `https://api.foursquare.com/v2/venues/search?ll=${
         store.getState().userLocation.lat
@@ -67,32 +66,27 @@ class App extends Component {
   }
 
   getLocation = () => {
-    console.log('pegando localização');
     this.setState({
       isLoading: true
     });
-    store.dispatch(
-      accessLocation('Obtendo sua localização. Por favor, aguarde...')
-    );
+    store.dispatch(accessLocation('Obtendo sua localização. Por favor, aguarde...'));
     navigator.geolocation.getCurrentPosition(position => {
       const latitude = position.coords.latitude,
         longitude = position.coords.longitude;
-      if (position.coords.latitude !== undefined) {
+      if (latitude !== undefined) {
         store.dispatch(
           addLocation({
             lng: longitude,
             lat: latitude
           })
         );
-        store.dispatch(
-          accessLocation('Localização obtida. Carregando resultados...')
-        );
+        store.dispatch(accessLocation('Localização obtida. Carregando resultados...'));
         this.places();
       } else {
         this.setState({ errorLocate: true });
         toast.error(
-          'Houve um erro ao capturar sua localização. Recarregue a página. Se o problema persistir, tente novamente mais tarde.',
-          this.state.toastDefaultProps
+          'Houve um erro ao capturar sua localização. Recarregue a página ou tente novamente mais tarde.',
+          store.getState().toastDefaultProps
         );
       }
     });
@@ -156,6 +150,8 @@ class App extends Component {
 }
 
 const mapStateToProps = store => ({
-  venues: store.venues
+  venues: store.venues,
+  accessLocation: store.accessLocation,
+  toastDefaultProps: store.toastDefaultProps
 });
 export default connect(mapStateToProps)(App);
